@@ -2,7 +2,7 @@
 export const SITE_URL = 'https://angularians.dev'
 
 /** The site's repository on GitHub. */
-export const REPO_URL = 'https://github.com/erkamyaman/angularians'
+export const REPO_URL = 'https://github.com/Angularians/angularians'
 
 export const SPONSOR_URL = 'https://github.com/sponsors/erkamyaman'
 
@@ -30,4 +30,4 @@ export interface LaunchPost {
 }
 
 /** The launch post; `null` hides the home page's callout until the post is out. */
-export const LAUNCH_POST: LaunchPost | null = { title: 'The gates of ng-halla are open', href: 'https://github.com/erkamyaman/angularians/discussions/90' }
+export const LAUNCH_POST: LaunchPost | null = { title: 'The gates of ng-halla are open', href: 'https://github.com/Angularians/angularians/discussions/90' }

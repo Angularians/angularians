@@ -10,7 +10,7 @@ describes. By contributing you agree that your work is licensed under the [MIT l
 You need Node.js 24 (`.nvmrc` names the version CI and Netlify use) and pnpm 10.
 
 ```sh
-git clone https://github.com/erkamyaman/angularians.git
+git clone https://github.com/Angularians/angularians.git
 cd angularians
 pnpm install
 pnpm dev             # the site at http://localhost:4242, with the data in data/
@@ -50,10 +50,10 @@ Each common change has a skill in [`.agents/skills/`](.agents/skills): the steps
 
 | Change | Skill | Or open an issue |
 | --- | --- | --- |
-| A custom badge for your project | [`add-a-custom-badge`](.agents/skills/add-a-custom-badge/SKILL.md) | [Badge request](https://github.com/erkamyaman/angularians/issues/new?template=badge-request.yml) |
-| The Angular GDE, GitHub Star or Nx Champion badge | [`add-a-recognition`](.agents/skills/add-a-recognition/SKILL.md) | [Recognition request](https://github.com/erkamyaman/angularians/issues/new?template=recognition-request.yml) |
-| The translator and contributor badges, for angular.dev's community translations | [`add-a-translator`](.agents/skills/add-a-translator/SKILL.md) | [an issue](https://github.com/erkamyaman/angularians/issues/new/choose) |
-| A bot on the board | [`flag-a-bot`](.agents/skills/flag-a-bot/SKILL.md) | [Bot report](https://github.com/erkamyaman/angularians/issues/new?template=bot-report.yml) |
+| A custom badge for your project | [`add-a-custom-badge`](.agents/skills/add-a-custom-badge/SKILL.md) | [Badge request](https://github.com/Angularians/angularians/issues/new?template=badge-request.yml) |
+| The Angular GDE, GitHub Star or Nx Champion badge | [`add-a-recognition`](.agents/skills/add-a-recognition/SKILL.md) | [Recognition request](https://github.com/Angularians/angularians/issues/new?template=recognition-request.yml) |
+| The translator and contributor badges, for angular.dev's community translations | [`add-a-translator`](.agents/skills/add-a-translator/SKILL.md) | [an issue](https://github.com/Angularians/angularians/issues/new/choose) |
+| A bot on the board | [`flag-a-bot`](.agents/skills/flag-a-bot/SKILL.md) | [Bot report](https://github.com/Angularians/angularians/issues/new?template=bot-report.yml) |
 | A repository on the board | [`add-a-repository`](.agents/skills/add-a-repository/SKILL.md) | an issue first: the maintainer decides |
 | The score | [`change-the-score`](.agents/skills/change-the-score/SKILL.md) | an issue first: it moves every rank |
 | Any change to the site, before the PR | [`check-a-site-change`](.agents/skills/check-a-site-change/SKILL.md) | |

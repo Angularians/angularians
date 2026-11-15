@@ -7,7 +7,7 @@ Only the live site, [angularians.dev](https://angularians.dev), and the latest c
 ## Report a vulnerability
 
 Use GitHub's private vulnerability reporting: open the repository's **Security** tab and choose **Report a vulnerability**
-(<https://github.com/erkamyaman/angularians/security/advisories/new>). Please do not open a public issue for a security problem.
+(<https://github.com/Angularians/angularians/security/advisories/new>). Please do not open a public issue for a security problem.
 
 Say what you did, what happened and what you expected. A small reproduction helps.
 

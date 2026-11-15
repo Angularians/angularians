@@ -4,7 +4,7 @@ import { appJwt, currentToken, resetTokenCache } from '../src/auth.ts'
 
 const { privateKey, publicKey } = generateKeyPairSync('rsa', { modulusLength: 2048 })
 const pem = privateKey.export({ type: 'pkcs1', format: 'pem' }).toString()
-const app = { COLLECT_APP_ID: '123', COLLECT_APP_KEY: pem, GITHUB_REPOSITORY: 'erkamyaman/angularians' }
+const app = { COLLECT_APP_ID: '123', COLLECT_APP_KEY: pem, GITHUB_REPOSITORY: 'Angularians/angularians' }
 
 afterEach(() => {
   vi.unstubAllGlobals()
@@ -25,7 +25,7 @@ describe('currentToken', () => {
   const stub = () => {
     let n = 0
     const fetch = vi.fn(async (url: string, _init?: RequestInit) => {
-      if (url.endsWith('/app/installations')) return new Response(JSON.stringify([{ id: 8, account: { login: 'someone' } }, { id: 9, account: { login: 'ErkamYaman' } }]))
+      if (url.endsWith('/app/installations')) return new Response(JSON.stringify([{ id: 8, account: { login: 'someone' } }, { id: 9, account: { login: 'ANGULARIANS' } }]))
       if (url.endsWith('/app/installations/9/access_tokens')) {
         n++
         return new Response(JSON.stringify({ token: `ghs_${n}`, expires_at: new Date(Date.parse('2026-11-04T08:00:00Z') + (n - 1) * 3600_000).toISOString() }))

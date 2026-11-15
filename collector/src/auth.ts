@@ -45,7 +45,7 @@ async function installationToken(env: NodeJS.ProcessEnv, now: number): Promise<{
   // Secrets pasted from a file can come with `\n` written out, or Windows line ends.
   const key = env['COLLECT_APP_KEY']!.replace(/\\n/g, '\n').replace(/\r/g, '').trim()
   const jwt = appJwt(env['COLLECT_APP_ID']!.trim(), key, now)
-  const owner = (env['GITHUB_REPOSITORY'] ?? 'erkamyaman/angularians').split('/')[0]!.toLowerCase()
+  const owner = (env['GITHUB_REPOSITORY'] ?? 'Angularians/angularians').split('/')[0]!.toLowerCase()
   const installations = await appRequest<Array<{ id: number, account: { login: string } | null }>>('/app/installations', jwt)
   const installation = installations.find(item => item.account?.login.toLowerCase() === owner)
   if (!installation) throw new Error(`GitHub App: not installed on ${owner} (Install App in the App's settings)`)

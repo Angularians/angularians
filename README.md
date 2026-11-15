@@ -28,7 +28,7 @@
 You need Node 24 (`.nvmrc`) and pnpm 10.
 
 ```sh
-git clone https://github.com/erkamyaman/angularians.git
+git clone https://github.com/Angularians/angularians.git
 cd angularians
 pnpm install
 pnpm dev     # http://localhost:4242, with the data in data/
@@ -86,7 +86,7 @@ graph on the other, in Viking gold (`#9A6700`, and the brighter `#D29922` on dar
 ## Contributing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) and the [Code of Conduct](CODE_OF_CONDUCT.md). New here? Start with a
-[good first issue](https://github.com/erkamyaman/angularians/labels/good%20first%20issue). Report security problems through
+[good first issue](https://github.com/Angularians/angularians/labels/good%20first%20issue). Report security problems through
 [SECURITY.md](SECURITY.md).
 
 ## Maintainers
@@ -111,10 +111,10 @@ Thanks to everyone who has helped. This project follows the [all-contributors](h
 <table>
   <tbody>
     <tr>
-      <td align="center" valign="top" width="14.28%"><a href="https://github.com/erkamyaman"><img src="https://avatars.githubusercontent.com/u/88717125?v=4?s=100" width="100px;" alt="Erkam Yaman"/><br /><sub><b>Erkam Yaman</b></sub></a><br /><a href="https://github.com/erkamyaman/angularians/commits?author=erkamyaman" title="Code">💻</a> <a href="#design-erkamyaman" title="Design">🎨</a> <a href="https://github.com/erkamyaman/angularians/commits?author=erkamyaman" title="Documentation">📖</a> <a href="#infra-erkamyaman" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a> <a href="#maintenance-erkamyaman" title="Maintenance">🚧</a></td>
-      <td align="center" valign="top" width="14.28%"><a href="https://skyzerozx.com/"><img src="https://avatars.githubusercontent.com/u/73321943?v=4?s=100" width="100px;" alt="Jaime Burgos"/><br /><sub><b>Jaime Burgos</b></sub></a><br /><a href="https://github.com/erkamyaman/angularians/commits?author=SkyZeroZx" title="Code">💻</a></td>
-      <td align="center" valign="top" width="14.28%"><a href="https://linktr.ee/ngxsamurai"><img src="https://avatars.githubusercontent.com/u/2271337?v=4?s=100" width="100px;" alt="Ali Elderov"/><br /><sub><b>Ali Elderov</b></sub></a><br /><a href="#ideas-WuglyakBolgoink" title="Ideas, Planning, & Feedback">🤔</a> <a href="https://github.com/erkamyaman/angularians/issues?q=author%3AWuglyakBolgoink" title="Bug reports">🐛</a></td>
-      <td align="center" valign="top" width="14.28%"><a href="https://www.abikb.xyz/"><img src="https://avatars.githubusercontent.com/u/131433061?v=4?s=100" width="100px;" alt="Abiram"/><br /><sub><b>Abiram</b></sub></a><br /><a href="https://github.com/erkamyaman/angularians/issues?q=author%3Aabiramcodes" title="Bug reports">🐛</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/erkamyaman"><img src="https://avatars.githubusercontent.com/u/88717125?v=4?s=100" width="100px;" alt="Erkam Yaman"/><br /><sub><b>Erkam Yaman</b></sub></a><br /><a href="https://github.com/Angularians/angularians/commits?author=erkamyaman" title="Code">💻</a> <a href="#design-erkamyaman" title="Design">🎨</a> <a href="https://github.com/Angularians/angularians/commits?author=erkamyaman" title="Documentation">📖</a> <a href="#infra-erkamyaman" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a> <a href="#maintenance-erkamyaman" title="Maintenance">🚧</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://skyzerozx.com/"><img src="https://avatars.githubusercontent.com/u/73321943?v=4?s=100" width="100px;" alt="Jaime Burgos"/><br /><sub><b>Jaime Burgos</b></sub></a><br /><a href="https://github.com/Angularians/angularians/commits?author=SkyZeroZx" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://linktr.ee/ngxsamurai"><img src="https://avatars.githubusercontent.com/u/2271337?v=4?s=100" width="100px;" alt="Ali Elderov"/><br /><sub><b>Ali Elderov</b></sub></a><br /><a href="#ideas-WuglyakBolgoink" title="Ideas, Planning, & Feedback">🤔</a> <a href="https://github.com/Angularians/angularians/issues?q=author%3AWuglyakBolgoink" title="Bug reports">🐛</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://www.abikb.xyz/"><img src="https://avatars.githubusercontent.com/u/131433061?v=4?s=100" width="100px;" alt="Abiram"/><br /><sub><b>Abiram</b></sub></a><br /><a href="https://github.com/Angularians/angularians/issues?q=author%3Aabiramcodes" title="Bug reports">🐛</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://gerome.dev"><img src="https://avatars.githubusercontent.com/u/32737308?v=4?s=100" width="100px;" alt="Gerome Grignon"/><br /><sub><b>Gerome Grignon</b></sub></a><br /><a href="#ideas-geromegrignon" title="Ideas, Planning, & Feedback">🤔</a></td>
     </tr>
   </tbody>
