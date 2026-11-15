@@ -3,7 +3,7 @@ import { NgTemplateOutlet } from '@angular/common'
 import { Component, computed, input, linkedSignal, signal } from '@angular/core'
 import { periodPhrase, sortPeriods, type Period, COUNTRIES, countryName } from '@angularians/shared'
 import { NgIcon, provideIcons } from '@ng-icons/core'
-import { remixCheckLine, remixDownloadLine, remixFileCopyLine, remixImageLine, remixLinkedinBoxFill, remixLinkM, remixMarkdownLine, remixShareLine } from '@ng-icons/remixicon'
+import { remixCheckLine, remixDownloadLine, remixFileCopyLine, remixImageLine, remixLinkedinBoxFill, remixLinkM, remixMarkdownLine, remixShareLine, remixUserForbidLine, remixUserLine, remixEyeLine, remixEyeOffLine } from '@ng-icons/remixicon'
 import { simpleBluesky, simpleX } from '@ng-icons/simple-icons'
 import { HlmButton } from '@spartan-ng/helm/button'
 import { HlmDialogImports } from '@spartan-ng/helm/dialog'
@@ -13,6 +13,7 @@ import { HlmSkeleton } from '@spartan-ng/helm/skeleton'
 import { SITE_URL } from '../site'
 import { shareQuery } from './share-query'
 import { CardBadgeOptions } from './card-badge-options'
+import { identityQuery } from './card-identity'
 import { badgeQuery, type BadgeNameStyle } from './card-badges'
 import { CARD_DESIGN } from './card-design'
 import type { EarnedBadge } from './earned-badges'
@@ -30,7 +31,7 @@ export const SHARE_BUTTONS = { link: 'Copy profile link', card: 'Share card', re
 @Component({
   selector: 'app-share',
   imports: [CardBadgeOptions, CountrySelect, HlmButton, HlmDialogImports, HlmSkeleton, NgIcon, NgTemplateOutlet, PeriodTabs],
-  providers: [provideIcons({ remixCheckLine, remixDownloadLine, remixFileCopyLine, remixImageLine, remixLinkedinBoxFill, remixShareLine, simpleBluesky, simpleX, remixLinkM, remixMarkdownLine })],
+  providers: [provideIcons({ remixCheckLine, remixDownloadLine, remixFileCopyLine, remixImageLine, remixLinkedinBoxFill, remixShareLine, simpleBluesky, simpleX, remixLinkM, remixMarkdownLine, remixUserForbidLine, remixUserLine, remixEyeLine, remixEyeOffLine })],
   templateUrl: './share.html',
   styleUrl: './share.css',
 })
@@ -62,6 +63,10 @@ export class Share {
   protected readonly flag = signal<string | null>(null)
   protected readonly hiddenBadges = signal<readonly string[]>([])
   protected readonly names = signal<BadgeNameStyle>('fun')
+  protected readonly showAvatar = signal(true)
+  protected readonly showName = signal(true)
+  protected readonly avatarLabel = computed(() => (this.showAvatar() ? 'Hide picture' : 'Show picture'))
+  protected readonly nameLabel = computed(() => (this.showName() ? 'Hide name' : 'Show name'))
   protected readonly allCountries = Object.keys(COUNTRIES).map(code => ({ code, count: 0, top: [] }))
   protected readonly name = countryName
   protected readonly flagLabel = computed(() => {
@@ -70,13 +75,13 @@ export class Share {
   })
   protected readonly cardPeriods = computed(() => sortPeriods(['all', ...this.periods()]))
 
-  private readonly badgeOptions = computed(() => badgeQuery({ hidden: this.hiddenBadges(), names: this.names() }))
+  private readonly cardOptions = computed(() => ({ ...badgeQuery({ hidden: this.hiddenBadges(), names: this.names() }), ...identityQuery({ avatar: this.showAvatar(), name: this.showName() }) }))
   private readonly profileUrl = computed(() => `${SITE_URL}/${this.username()}${shareQuery(this.period())}`)
   /** The profile with the card's period and flag: what a post links to, and the README card's link. */
-  private readonly cardProfileUrl = computed(() => `${SITE_URL}/${this.username()}${shareQuery(this.cardPeriod(), this.flag(), this.badgeOptions())}`)
-  private readonly cardUrl = computed(() => `${SITE_URL}/${this.username()}/card.png${shareQuery(this.cardPeriod(), this.flag(), this.badgeOptions())}`)
+  private readonly cardProfileUrl = computed(() => `${SITE_URL}/${this.username()}${shareQuery(this.cardPeriod(), this.flag(), this.cardOptions())}`)
+  private readonly cardUrl = computed(() => `${SITE_URL}/${this.username()}/card.png${shareQuery(this.cardPeriod(), this.flag(), this.cardOptions())}`)
   /** The same card from this site: right on a preview deploy or locally too. The Markdown keeps the public address. */
-  protected readonly previewUrl = computed(() => `/${this.username()}/card.png${shareQuery(this.cardPeriod(), this.flag(), { v: String(CARD_DESIGN), ...this.badgeOptions() })}`)
+  protected readonly previewUrl = computed(() => `/${this.username()}/card.png${shareQuery(this.cardPeriod(), this.flag(), { v: String(CARD_DESIGN), ...this.cardOptions() })}`)
   protected readonly fileName = computed(() => `${this.username()}-angularian${this.cardPeriod() === 'all' ? '' : `-${this.cardPeriod()}`}.png`)
   /** The profile's link preview is this card, so a post only needs the link. */
   protected readonly shareLinks = computed(() => {
@@ -104,6 +109,8 @@ export class Share {
     this.flag.set(null)
     this.hiddenBadges.set([])
     this.names.set('fun')
+    this.showAvatar.set(true)
+    this.showName.set(true)
     this.shownUrl.set(null)
     this.startLoading()
   }
@@ -117,6 +124,16 @@ export class Share {
   protected pickFlag(code: string | null): void {
     if (code === this.flag()) return
     this.flag.set(code)
+    this.startLoading()
+  }
+
+  protected toggleAvatar(): void {
+    this.showAvatar.update(shown => !shown)
+    this.startLoading()
+  }
+
+  protected toggleName(): void {
+    this.showName.update(shown => !shown)
     this.startLoading()
   }
 

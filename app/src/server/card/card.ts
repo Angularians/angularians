@@ -105,8 +105,8 @@ export function cardPeriod(profile: ContributorProfile, requested: unknown): Per
   return period !== 'all' && profile.periods.some(row => row.period === period) ? period : 'all'
 }
 
-/** `avatar`: a data URL, or `null` when GitHub did not send it (a grey circle instead). */
-export function cardTree(profile: ContributorProfile, period: Period, avatar: string | null, flag: { src: string, name: string } | null = null, tags: readonly CardTag[] = []): Node {
+/** `avatar`: a data URL, `null` when GitHub did not send it (a grey circle instead), or `false` when the owner left it off. */
+export function cardTree(profile: ContributorProfile, period: Period, avatar: string | null | false, flag: { src: string, name: string } | null = null, tags: readonly CardTag[] = [], showName = true): Node {
   const tiles = !tags.length ? TILES : tags.some(tag => tag.row === 3) ? TILES_WITH_THREE_ROWS : TILES_WITH_TAGS
   const stats = period === 'all' ? profile : profile.periods.find(row => row.period === period)!
   const since = profile.firstContributionAt ? formatMonth(profile.firstContributionAt) : null
@@ -122,13 +122,13 @@ export function cardTree(profile: ContributorProfile, period: Period, avatar: st
   ]
   return h('div', { width: '100%', height: '100%', flexDirection: 'column', justifyContent: 'space-between', backgroundColor: '#0a0a0a', color: '#ffffff', paddingTop: 44, paddingRight: 64, paddingBottom: 36, paddingLeft: 64, fontFamily: 'Manrope' }, [
     h('div', { flexDirection: 'row', gap: 64 }, [
-      h('div', { flexDirection: 'column', width: 380 }, [
-        avatar
+      h('div', { flexDirection: 'column', width: 380, justifyContent: avatar === false || !showName ? 'center' : 'flex-start' }, [
+        ...(avatar === false ? [] : [avatar
           ? h('img', { width: 108, height: 108, borderRadius: 9999, border: '4px solid #262626' }, undefined, { src: avatar, width: 108, height: 108 })
-          : h('div', { width: 108, height: 108, borderRadius: 9999, backgroundColor: '#262626' }),
-        h('div', { fontSize: 40, fontWeight: 600, marginTop: 12, maxWidth: 380, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }, profile.username),
-        h('div', { fontFamily: 'Norse', fontWeight: 700, fontSize: 84, lineHeight: 1, letterSpacing: 2, color: BRAND, marginTop: 6 }, formatRank(period === 'all' ? profile.rank : stats.rank)),
-        h('div', { fontSize: 30, fontWeight: 600, color: BRAND, marginTop: 4 }, formatPoints(stats.score)),
+          : h('div', { width: 108, height: 108, borderRadius: 9999, backgroundColor: '#262626' })]),
+        ...(showName ? [h('div', { fontSize: 40, fontWeight: 600, marginTop: avatar === false ? 0 : 12, maxWidth: 380, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }, profile.username)] : []),
+        h('div', { fontFamily: 'Norse', fontWeight: 700, fontSize: avatar === false && !showName ? 128 : 84, lineHeight: 1, letterSpacing: 2, color: BRAND, marginTop: showName ? 6 : avatar === false ? 0 : 12 }, formatRank(period === 'all' ? profile.rank : stats.rank)),
+        h('div', { fontSize: avatar === false && !showName ? 36 : 30, fontWeight: 600, color: BRAND, marginTop: 4 }, formatPoints(stats.score)),
         ...(period !== 'all' ? [h('div', { fontSize: 24, color: '#a3a3a3', marginTop: 4 }, periodPhrase(period))] : []),
         ...(flag ? [h('div', { flexDirection: 'row', alignItems: 'center', gap: 10, marginTop: period === 'all' ? 10 : 4, fontSize: 24, color: '#a3a3a3' }, [
           h('img', { width: 30, height: 30 }, undefined, { src: flag.src, width: 30, height: 30 }),

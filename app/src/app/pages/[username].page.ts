@@ -15,6 +15,7 @@ import {
   simpleBluesky, simpleFacebook, simpleGithub, simpleInstagram, simpleMastodon, simpleNpm, simpleReddit, simpleThreads, simpleTwitch, simpleX,
   simpleYoutube,
 } from '@ng-icons/simple-icons';
+import { identityQuery, parseCardIdentity } from '../profile/card-identity';
 import { badgeQuery, parseBadgeOptions } from '../profile/card-badges';
 import { BADGE_ICONS, earnedBadges } from '../profile/earned-badges';
 import { BadgePill } from '../profile/badge-pill';
@@ -85,6 +86,7 @@ export default class Profile {
   /** The country the owner picked for the shared card, for this link's preview image. */
   private readonly cardFlag = injectQueryParams(params => countryCode(params['flag']));
   private readonly cardBadges = injectQueryParams(params => parseBadgeOptions(params['hide'], params['names']));
+  private readonly cardIdentity = injectQueryParams(params => parseCardIdentity(params['avatar'], params['name']));
   /** Every period is in the profile: switching period needs no request. */
   protected readonly profile = injectSeededServerFn(getContributor, () => ({ username: this.username() }));
 
@@ -237,7 +239,7 @@ export default class Profile {
     const { title, description } = profileHead(person, this.current(), this.period());
     this.title.setTitle(`${title} · Angularians`);
     this.meta.removeTag('name="robots"');
-    const cardQuery = shareQuery(this.period(), this.cardFlag(), badgeQuery(this.cardBadges()));
+    const cardQuery = shareQuery(this.period(), this.cardFlag(), { ...badgeQuery(this.cardBadges()), ...identityQuery(this.cardIdentity()) });
     setShareMeta(this.meta, this.document, {
       title,
       description,
