@@ -2,7 +2,7 @@ import { sendPng } from '../../data/http'
 import { createError, defineEventHandler, getQuery, getRouterParam } from 'h3'
 import * as v from 'valibot'
 import { countryCode, countryName } from '@angularians/shared'
-import { parseBadgeOptions } from '../../../app/profile/card-badges'
+import { parseCardOptions } from '../../../app/profile/card-options'
 import { avatarData, cardFonts, flagData } from '../../card/assets'
 import { cardBadgeTags } from '../../card/badges'
 import { cardPeriod, cardTree, renderCard } from '../../card/card'
@@ -10,7 +10,7 @@ import { UsernameSchema } from '../../data/schemas'
 import { contributorsData } from '../../data/store'
 
 /**
- * `GET /:username/card.png?period=2025&flag=TR`: the Angularian card, for GitHub profile READMEs and the profile's link
+ * `GET /:username/card.png?period=2025&flag=TR&avatar=off&username=off`: the Angularian card, for GitHub profile READMEs and the profile's link
  * preview. The URL never changes; the numbers do, every night.
  */
 export default defineEventHandler(async (event) => {
@@ -22,8 +22,9 @@ export default defineEventHandler(async (event) => {
   const period = cardPeriod(profile, getQuery(event)['period'])
   // `?flag=TR`: the country the owner picked for this card. Otherwise their GitHub location.
   const code = countryCode(getQuery(event)['flag']) ?? profile.country ?? null
-  const [avatar, flagSrc, fonts, tags] = await Promise.all([avatarData(profile.githubId), code ? flagData(code) : null, cardFonts(), cardBadgeTags(profile, parseBadgeOptions(getQuery(event)['hide'], getQuery(event)['names']))])
-  const png = await renderCard(cardTree(profile, period, avatar, code && flagSrc ? { src: flagSrc, name: countryName(code) } : null, tags), fonts)
+  const { badges, identity } = parseCardOptions(getQuery(event))
+  const [avatar, flagSrc, fonts, tags] = await Promise.all([identity.avatar ? avatarData(profile.githubId) : null, code ? flagData(code) : null, cardFonts(), cardBadgeTags(profile, badges)])
+  const png = await renderCard(cardTree(profile, period, avatar, code && flagSrc ? { src: flagSrc, name: countryName(code) } : null, tags, identity), fonts)
   // A day in shared caches (GitHub's image proxy too): each night's deploy clears the CDN.
   return sendPng(event, png)
 })

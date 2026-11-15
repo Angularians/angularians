@@ -9,6 +9,7 @@ import { formatMonth } from '../../app/text/date-format'
 import { formatNumber, formatPoints, formatRank } from '../../app/text/number-format'
 import { statWord } from '../../app/text/stat-names'
 import { TAG_FONT_SIZE, TAG_GAP, TAG_HEIGHT, TAG_ICON_SIZE, TAG_ICON_WIDTH, TAG_LARGE_ICON, TAG_LARGE_SIZE, TAG_PADDING, type CardTag } from './card-tags'
+import type { CardIdentity } from '../../app/profile/card-identity'
 import type { TagColors } from './tag-colors'
 import { TAG_FONTS } from './tag-fonts'
 
@@ -105,11 +106,23 @@ export function cardPeriod(profile: ContributorProfile, requested: unknown): Per
   return period !== 'all' && profile.periods.some(row => row.period === period) ? period : 'all'
 }
 
-/** `avatar`: a data URL, or `null` when GitHub did not send it (a grey circle instead). */
-export function cardTree(profile: ContributorProfile, period: Period, avatar: string | null, flag: { src: string, name: string } | null = null, tags: readonly CardTag[] = []): Node {
+function cardHead({ avatar, username }: CardIdentity) {
+  const bare = !avatar && !username
+  return {
+    justify: avatar && username ? 'flex-start' : 'center',
+    usernameTop: avatar ? 12 : 0,
+    rankTop: username ? 6 : avatar ? 12 : 0,
+    rankSize: bare ? 128 : 84,
+    pointsSize: bare ? 36 : 30,
+  }
+}
+
+/** `avatar`: a data URL, or `null` when GitHub did not send it (a grey circle instead). `identity`: what the owner left on. */
+export function cardTree(profile: ContributorProfile, period: Period, avatar: string | null, flag: { src: string, name: string } | null = null, tags: readonly CardTag[] = [], identity: CardIdentity = { avatar: true, username: true }): Node {
   const tiles = !tags.length ? TILES : tags.some(tag => tag.row === 3) ? TILES_WITH_THREE_ROWS : TILES_WITH_TAGS
   const stats = period === 'all' ? profile : profile.periods.find(row => row.period === period)!
   const since = profile.firstContributionAt ? formatMonth(profile.firstContributionAt) : null
+  const head = cardHead(identity)
   const rows = [
     [
       { label: statWord('pullRequests', stats.pullRequests.all), value: stats.pullRequests.all, color: COLORS.pullRequests, icon: ICONS.pullRequests },
@@ -122,13 +135,13 @@ export function cardTree(profile: ContributorProfile, period: Period, avatar: st
   ]
   return h('div', { width: '100%', height: '100%', flexDirection: 'column', justifyContent: 'space-between', backgroundColor: '#0a0a0a', color: '#ffffff', paddingTop: 44, paddingRight: 64, paddingBottom: 36, paddingLeft: 64, fontFamily: 'Manrope' }, [
     h('div', { flexDirection: 'row', gap: 64 }, [
-      h('div', { flexDirection: 'column', width: 380 }, [
-        avatar
+      h('div', { flexDirection: 'column', width: 380, justifyContent: head.justify }, [
+        ...(!identity.avatar ? [] : [avatar
           ? h('img', { width: 108, height: 108, borderRadius: 9999, border: '4px solid #262626' }, undefined, { src: avatar, width: 108, height: 108 })
-          : h('div', { width: 108, height: 108, borderRadius: 9999, backgroundColor: '#262626' }),
-        h('div', { fontSize: 40, fontWeight: 600, marginTop: 12, maxWidth: 380, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }, profile.username),
-        h('div', { fontFamily: 'Norse', fontWeight: 700, fontSize: 84, lineHeight: 1, letterSpacing: 2, color: BRAND, marginTop: 6 }, formatRank(period === 'all' ? profile.rank : stats.rank)),
-        h('div', { fontSize: 30, fontWeight: 600, color: BRAND, marginTop: 4 }, formatPoints(stats.score)),
+          : h('div', { width: 108, height: 108, borderRadius: 9999, backgroundColor: '#262626' })]),
+        ...(identity.username ? [h('div', { fontSize: 40, fontWeight: 600, marginTop: head.usernameTop, maxWidth: 380, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }, profile.username)] : []),
+        h('div', { fontFamily: 'Norse', fontWeight: 700, fontSize: head.rankSize, lineHeight: 1, letterSpacing: 2, color: BRAND, marginTop: head.rankTop }, formatRank(period === 'all' ? profile.rank : stats.rank)),
+        h('div', { fontSize: head.pointsSize, fontWeight: 600, color: BRAND, marginTop: 4 }, formatPoints(stats.score)),
         ...(period !== 'all' ? [h('div', { fontSize: 24, color: '#a3a3a3', marginTop: 4 }, periodPhrase(period))] : []),
         ...(flag ? [h('div', { flexDirection: 'row', alignItems: 'center', gap: 10, marginTop: period === 'all' ? 10 : 4, fontSize: 24, color: '#a3a3a3' }, [
           h('img', { width: 30, height: 30 }, undefined, { src: flag.src, width: 30, height: 30 }),

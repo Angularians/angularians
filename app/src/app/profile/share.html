@@ -12,9 +12,19 @@
 </ng-template>
 
 <ng-template #preview>
-      @if (cardPeriods().length > 1) {
-        <app-period-tabs class="self-start" [period]="cardPeriod()" [periods]="cardPeriods()" label="Period of the card" (periodChange)="pickPeriod($event)" />
-      }
+      <div class="flex flex-wrap items-center justify-between gap-2">
+        @if (cardPeriods().length > 1) {
+          <app-period-tabs [period]="cardPeriod()" [periods]="cardPeriods()" label="Period of the card" (periodChange)="pickPeriod($event)" />
+        }
+        <div class="flex gap-1">
+          <button hlmBtn variant="ghost" size="sm" type="button" (click)="toggleAvatar()">
+            <ng-icon [name]="showAvatar() ? 'remixUserForbidLine' : 'remixUserLine'" aria-hidden="true" /> {{ avatarLabel() }}
+          </button>
+          <button hlmBtn variant="ghost" size="sm" type="button" (click)="toggleUsername()">
+            <ng-icon [name]="showUsername() ? 'remixEyeOffLine' : 'remixEyeLine'" aria-hidden="true" /> {{ usernameLabel() }}
+          </button>
+        </div>
+      </div>
       <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3">
         <app-country-select class="shrink-0" [countries]="allCountries" [value]="flag()" [allLabel]="flagLabel()" ariaLabel="Country on the card" [showCounts]="false" (valueChange)="pickFlag($event)" />
         <p class="text-xs text-pretty text-muted-foreground">
