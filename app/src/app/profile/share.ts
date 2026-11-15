@@ -3,7 +3,7 @@ import { NgTemplateOutlet } from '@angular/common'
 import { Component, computed, input, linkedSignal, signal } from '@angular/core'
 import { periodPhrase, sortPeriods, type Period, COUNTRIES, countryName } from '@angularians/shared'
 import { NgIcon, provideIcons } from '@ng-icons/core'
-import { remixCheckLine, remixDownloadLine, remixFileCopyLine, remixImageLine, remixLinkedinBoxFill, remixLinkM, remixMarkdownLine, remixShareLine, remixUserForbidLine, remixUserLine, remixEyeLine, remixEyeOffLine } from '@ng-icons/remixicon'
+import { remixCheckLine, remixDownloadLine, remixEyeLine, remixEyeOffLine, remixFileCopyLine, remixImageLine, remixLinkedinBoxFill, remixLinkM, remixMarkdownLine, remixShareLine, remixUserForbidLine, remixUserLine } from '@ng-icons/remixicon'
 import { simpleBluesky, simpleX } from '@ng-icons/simple-icons'
 import { HlmButton } from '@spartan-ng/helm/button'
 import { HlmDialogImports } from '@spartan-ng/helm/dialog'
@@ -13,9 +13,9 @@ import { HlmSkeleton } from '@spartan-ng/helm/skeleton'
 import { SITE_URL } from '../site'
 import { shareQuery } from './share-query'
 import { CardBadgeOptions } from './card-badge-options'
-import { identityQuery } from './card-identity'
-import { badgeQuery, type BadgeNameStyle } from './card-badges'
+import type { BadgeNameStyle } from './card-badges'
 import { CARD_DESIGN } from './card-design'
+import { cardOptionsQuery } from './card-options'
 import type { EarnedBadge } from './earned-badges'
 
 /** The skeleton shows at least this long, so a fast card does not flicker it. */
@@ -64,9 +64,9 @@ export class Share {
   protected readonly hiddenBadges = signal<readonly string[]>([])
   protected readonly names = signal<BadgeNameStyle>('fun')
   protected readonly showAvatar = signal(true)
-  protected readonly showName = signal(true)
+  protected readonly showUsername = signal(true)
   protected readonly avatarLabel = computed(() => (this.showAvatar() ? 'Hide picture' : 'Show picture'))
-  protected readonly nameLabel = computed(() => (this.showName() ? 'Hide name' : 'Show name'))
+  protected readonly usernameLabel = computed(() => (this.showUsername() ? 'Hide name' : 'Show name'))
   protected readonly allCountries = Object.keys(COUNTRIES).map(code => ({ code, count: 0, top: [] }))
   protected readonly name = countryName
   protected readonly flagLabel = computed(() => {
@@ -75,7 +75,7 @@ export class Share {
   })
   protected readonly cardPeriods = computed(() => sortPeriods(['all', ...this.periods()]))
 
-  private readonly cardOptions = computed(() => ({ ...badgeQuery({ hidden: this.hiddenBadges(), names: this.names() }), ...identityQuery({ avatar: this.showAvatar(), name: this.showName() }) }))
+  private readonly cardOptions = computed(() => cardOptionsQuery({ badges: { hidden: this.hiddenBadges(), names: this.names() }, identity: { avatar: this.showAvatar(), username: this.showUsername() } }))
   private readonly profileUrl = computed(() => `${SITE_URL}/${this.username()}${shareQuery(this.period())}`)
   /** The profile with the card's period and flag: what a post links to, and the README card's link. */
   private readonly cardProfileUrl = computed(() => `${SITE_URL}/${this.username()}${shareQuery(this.cardPeriod(), this.flag(), this.cardOptions())}`)
@@ -110,7 +110,7 @@ export class Share {
     this.hiddenBadges.set([])
     this.names.set('fun')
     this.showAvatar.set(true)
-    this.showName.set(true)
+    this.showUsername.set(true)
     this.shownUrl.set(null)
     this.startLoading()
   }
@@ -132,8 +132,8 @@ export class Share {
     this.startLoading()
   }
 
-  protected toggleName(): void {
-    this.showName.update(shown => !shown)
+  protected toggleUsername(): void {
+    this.showUsername.update(shown => !shown)
     this.startLoading()
   }
 

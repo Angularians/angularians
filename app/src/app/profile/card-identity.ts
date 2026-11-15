@@ -1,11 +1,11 @@
 export interface CardIdentity {
   avatar: boolean
-  name: boolean
+  username: boolean
 }
 
-export const parseCardIdentity = (avatar: unknown, name: unknown): CardIdentity => ({ avatar: avatar !== 'off', name: name !== 'off' })
+export const parseCardIdentity = (avatar: unknown, username: unknown): CardIdentity => ({ avatar: avatar !== 'off', username: username !== 'off' })
 
-export const identityQuery = ({ avatar, name }: CardIdentity): Record<string, string> => ({
+export const identityQuery = ({ avatar, username }: CardIdentity): Record<string, string> => ({
   ...(avatar ? {} : { avatar: 'off' }),
-  ...(name ? {} : { name: 'off' }),
+  ...(username ? {} : { username: 'off' }),
 })

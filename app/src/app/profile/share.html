@@ -17,11 +17,11 @@
           <app-period-tabs [period]="cardPeriod()" [periods]="cardPeriods()" label="Period of the card" (periodChange)="pickPeriod($event)" />
         }
         <div class="flex gap-1">
-          <button hlmBtn variant="ghost" size="sm" type="button" [attr.aria-pressed]="!showAvatar()" (click)="toggleAvatar()">
+          <button hlmBtn variant="ghost" size="sm" type="button" (click)="toggleAvatar()">
             <ng-icon [name]="showAvatar() ? 'remixUserForbidLine' : 'remixUserLine'" aria-hidden="true" /> {{ avatarLabel() }}
           </button>
-          <button hlmBtn variant="ghost" size="sm" type="button" [attr.aria-pressed]="!showName()" (click)="toggleName()">
-            <ng-icon [name]="showName() ? 'remixEyeOffLine' : 'remixEyeLine'" aria-hidden="true" /> {{ nameLabel() }}
+          <button hlmBtn variant="ghost" size="sm" type="button" (click)="toggleUsername()">
+            <ng-icon [name]="showUsername() ? 'remixEyeOffLine' : 'remixEyeLine'" aria-hidden="true" /> {{ usernameLabel() }}
           </button>
         </div>
       </div>
